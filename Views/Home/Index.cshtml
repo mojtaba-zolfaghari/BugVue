@@ -1,0 +1,247 @@
+﻿
+
+<div id="app">
+
+
+    <button class="btn btn-primary" v-on:click="showNewBugModal">Add New Bug ... </button>
+    <input type="text" value="" class="keyboardInput">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(bug,index) in bugs">
+                <td>{{index+1}}</td>
+                <td>{{bug.name}}</td>
+                <td>{{bug.description}}</td>
+                <td>
+                    <button class="btn btn-danger" v-on:click="ShowDeleteBugModal(bug,index)">Remove</button>
+                    <button class="btn btn-warning" v-on:click="showeditmodal(bug,index)">Edit</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div class="modal fade" id="AddBugModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Bug</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input v-model="name" type="text" class="form-control" style="width:100%" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <input v-model="description" type="text" class="form-control" style="width:100%" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="addBugs" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="EditBugModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Bug</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input v-model="name" type="text" class="form-control" style="width:100%" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <input v-model="description" type="text" class="form-control" style="width:100%" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="editBugs" class="btn btn-primary">Save Edited Feilds</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="DeleteBugModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Bug</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-info">Are You Sure Want To Delete This Record ?</p>
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input v-model="name" disabled="disabled" type="text" class="form-control" style="width:100%" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <input v-model="description" disabled="disabled" type="text" class="form-control" style="width:100%" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="removeBug(bug,index)" class="btn btn-primary">Yes Delete It</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/lib/vue/vue.min.js"></script>
+    <script src="http://unpkg.com/portal-vue"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                bugs: [],
+                name: "",
+                description: "",
+                bugId: null,
+                bugIndex: null
+            },
+            created: function () {
+                this.getBugs();
+            },
+            methods: {
+                ShowDeleteBugModal: function (bug, index) {
+                    this.bugIndex = index;
+
+                    this.bugId = bug.id;
+                    this.name = bug.name;
+                    this.description = bug.description;
+
+                    $("#DeleteBugModal").modal("show");
+
+                },
+                removeBug: function (bug, index) {
+                    var vm = this;
+                    $.ajax({ url: "/bug", data: bug, method: "DELETE" })
+                        .done(function (data) {
+                            vm.bugs.splice(index, 1);
+                            toastr.success("Deleted ! ");
+                        })
+                        .fail(function () {
+                            toastr.fail("Delete Not Complete ! ");
+                        })
+                        .always(function () {
+                            vm.name = "";
+                            vm.description = "";
+                            $("#EditBugModal").modal("hide");
+
+                        });
+
+
+                },
+                showeditmodal: function (bug, index) {
+                    this.bugIndex = index;
+
+                    this.bugId = bug.id;
+                    this.name = bug.name;
+                    this.description = bug.description;
+
+                    $("#EditBugModal").modal("show");
+
+                },
+                editBugs: function () {
+                    var vm = this;
+                    var newBug = {
+                        id: vm.bugId,
+                        name: vm.name,
+                        description: vm.description
+                    }
+
+                    $.ajax({ url: "/bug", data: newBug, method: "PUT" })
+                        .done(function () {
+
+                            vm.bugs[vm.bugIndex].name = vm.name;
+                            vm.bugs[vm.bugIndex].description = vm.description;
+                            toastr.success("Success Edited !");
+
+                        }).fail(function () {
+                            toastr.error("Error Happen !");
+
+                        }).always(function () {
+                            vm.name = "";
+                            vm.description = "";
+                            $("#EditBugModal").modal("hide");
+
+                        });
+                },
+
+
+
+
+                showNewBugModal: function () {
+                    $("#AddBugModal").modal("show");
+                },
+                addBugs: function () {
+                    var vm = this;
+
+                    var newBug = {
+                        name: vm.name,
+                        description: vm.description
+                    }
+
+                    $.ajax({ url: "/bug", data: newBug, method: "POST" })
+                        .done(function (data) {
+                            vm.bugs.splice(0, 0, newBug);
+                            toastr.success("Done");
+
+                        }).fail(function () {
+                            toastr.error("Error Happend !");
+                        }).always(function () {
+                            vm.name = "";
+                            vm.description = "";
+                            $("#AddBugModal").modal("hide");
+                        });
+                },
+
+
+
+
+                getBugs: function () {
+                    var vm = this;
+
+                    $.ajax({ url: "/bug", method: "GET" })
+                        .done(function (data) {
+                            vm.bugs = data;
+                            toastr.info("Success");
+                        }).fail(function () {
+                            toastr.error("Error");
+                        });
+                }
+            }
+        }
+        );
+    </script>
+}
+
