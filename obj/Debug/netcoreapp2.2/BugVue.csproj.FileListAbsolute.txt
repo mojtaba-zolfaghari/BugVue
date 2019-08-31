@@ -23,3 +23,4 @@ C:\Users\Mojtaba\Desktop\TestVueJs\BugVue\BugVue\obj\Debug\netcoreapp2.2\Razor\V
 C:\Users\Mojtaba\Desktop\TestVueJs\BugVue\BugVue\obj\Debug\netcoreapp2.2\BugVue.RazorTargetAssemblyInfo.cs
 C:\Users\Mojtaba\Desktop\TestVueJs\BugVue\BugVue\obj\Debug\netcoreapp2.2\BugVue.Views.pdb
 C:\Users\Mojtaba\Desktop\TestVueJs\BugVue\BugVue\obj\Debug\netcoreapp2.2\BugVue.csproj.CopyComplete
+C:\Users\Mojtaba\Desktop\TestVueJs\BugVue\BugVue\obj\Debug\netcoreapp2.2\Razor\Views\Home\Calender.g.cshtml.cs

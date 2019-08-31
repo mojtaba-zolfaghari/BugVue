@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Calender</title>
+    <!--Load Kendo styles from the Kendo CDN service-->
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.default.min.css" />
+</head>
+<body>
+
+
+    <!--Load the required libraries - jQuery, Kendo, Babel and Vue-->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.3.913/js/kendo.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+
+    <!--Load the required Kendo Vue package(s)-->
+    <script src="~/lib/kendo/kendo-dateinputs-vue-wrapper.min.js"></script>
+    <script src="~/lib/kendo/kendo-buttons-vue-wrapper.js"></script>
+    <script src="~/lib/kendo/kendo-editor-vue-wrapper.js"></script>
+    <div id="vueapp" class="vue-app k-rtl">
+        <kendo-calendar :value="new Date()" selection></kendo-calendar>
+        <div class="row">
+            <kendo-button class="k-primary" icon="plus ">اضافه کردن</kendo-button>
+            <kendo-button sprite-css-class="btn btn-success">Calendar</kendo-button>
+        </div>
+    </div>
+    <script>
+        new Vue({ el: '#vueapp' })
+    </script>
+
+</body>
+</html>

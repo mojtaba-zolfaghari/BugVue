@@ -45,10 +45,7 @@
     },
     {
       "library": "bootstrap-rtl@3.4.0",
-      "destination": "wwwroot/lib/bootstrap-rtl/",
-      "files": [
-        "css/bootstrap-rtl.min.css"
-      ]
+      "destination": "wwwroot/lib/bootstrap-rtl/"
     }
   ]
 }

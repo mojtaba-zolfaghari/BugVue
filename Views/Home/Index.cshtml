@@ -4,7 +4,12 @@
 
 
     <button class="btn btn-primary" v-on:click="showNewBugModal">Add New Bug ... </button>
+    <button class="btn btn-primary" v-on:click="showMessageModal">Show Modal </button>
     <input type="text" value="" class="keyboardInput">
+
+
+
+
 
     <table class="table">
         <thead>
@@ -28,7 +33,6 @@
             </tr>
         </tbody>
     </table>
-
 
     <div class="modal fade" id="AddBugModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -111,13 +115,47 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <div class="modal fade" id="showMessageDialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-md-4 text-center">
+                        <input type="text" placeholder="جستجو" name="name" value="" />
+                    </div>
+                    <div  class="col-md-8 text-right">
+                        محل قرار گیری دکمه ثبت 
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p class="text-info">Are You Sure Want To Delete This Record ?</p>
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input v-model="name" disabled="disabled" type="text" class="form-control" style="width:100%" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <input v-model="description" disabled="disabled" type="text" class="form-control" style="width:100%" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="removeBug(bug,index)" class="btn btn-primary">Yes Delete It</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 
 
 @section scripts{
     <script src="~/lib/vue/vue.min.js"></script>
-    <script src="http://unpkg.com/portal-vue"></script>
     <script>
         var app = new Vue({
             el: "#app",
@@ -197,11 +235,11 @@
                         });
                 },
 
-
-
-
                 showNewBugModal: function () {
                     $("#AddBugModal").modal("show");
+                },
+                showMessageModal: function () {
+                    $("#showMessageDialog").modal("show");
                 },
                 addBugs: function () {
                     var vm = this;
@@ -224,9 +262,6 @@
                             $("#AddBugModal").modal("hide");
                         });
                 },
-
-
-
 
                 getBugs: function () {
                     var vm = this;
